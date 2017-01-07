@@ -1,2 +1,4 @@
-# finite_volume_seismic_model
-Code used to generate results for "A High-Resolution Finite Volume Seismic Model to Generate Seafloor Deformation for Tsunami Modeling"
+# Finite Volume Seismic Model Repository
+Code used to generate results for the manuscript
+
+[A High-Resolution Finite Volume Seismic Model to Generate Seafloor Deformation for Tsunami Modeling](https://arxiv.org)
