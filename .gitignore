@@ -1,0 +1,12 @@
+*.log
+*.o
+*.pyc
+*.mod
+.fig*
+*.data
+xamr
+output_*
+plots_*
+.output*
+.plots*
+.figure*
