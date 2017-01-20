@@ -35,8 +35,8 @@ AMRLIB = $(CLAW)/amrclaw/src/3d
 
 MODULES = \
   $(CLAW)/classic/src/utility_module.f90 \
-  $(AMRLIB)/gauges_module.f90 \
   amr_module.f90 \
+  $(AMRLIB)/gauges_module.f90 \
   fault_module.f90 \
   regions_module.f90 \
   slices_module.f90
