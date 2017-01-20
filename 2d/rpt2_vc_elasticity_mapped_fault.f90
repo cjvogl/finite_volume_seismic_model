@@ -55,8 +55,8 @@ subroutine rpt2(ixy,imp,maxm,meqn,mwaves,maux,mbc,mx,ql,qr,aux1,aux2,aux3,asdq,b
   ! Variables required for mapped grid version
   integer :: map, m
   double precision :: nxm, nym, nx2m, ny2m, nxym, nxp, nyp, nx2p, ny2p, nxyp
-  double precision :: dsignm, dsigtm, dunm, dutm
-  double precision :: dsignp, dsigtp, dunp, dutp
+  double precision :: dsignm, dsigtm, dunm, dutm, slipm
+  double precision :: dsignp, dsigtp, dunp, dutp, slipp
   double precision :: wave(meqn,mwaves), s(mwaves)
 !
 !
@@ -91,13 +91,15 @@ subroutine rpt2(ixy,imp,maxm,meqn,mwaves,maux,mbc,mx,ql,qr,aux1,aux2,aux3,asdq,b
   ! Define direction of normal to grid edge normals for downgoing fluctuation
     nxm = aux2(map,i1)
     nym = aux2(map+1,i1)
+    slipm = aux2(13,i1)
     nx2m = nxm*nxm
-  	ny2m = nym*nym
-  	nxym = nxm*nym
+    ny2m = nym*nym
+    nxym = nxm*nym
 
   !Define direction of normal to grid edge normals for upgoing fluctuation
     nxp = aux3(map,i1)
     nyp = aux3(map+1,i1)
+    slipp = aux3(13,i1)
     nx2p = nxp*nxp
     ny2p = nyp*nyp
     nxyp = nxp*nyp
@@ -148,25 +150,33 @@ subroutine rpt2(ixy,imp,maxm,meqn,mwaves,maux,mbc,mx,ql,qr,aux1,aux2,aux3,asdq,b
 
     ! S-wave strengths depending on if slip is imposed:
 
-    det = amum*cs + amu*csm
-    if (det.eq.0.d0) then
+    if (ixy .eq. 1 .and. dabs(slipm) > 1.d-10) then
       a3 = 0.d0
     else
-      a3 = (cs*dsigtm - amu*dutm) / det
+      det = amum*cs + amu*csm
+      if (det.eq.0.d0) then
+        a3 = 0.d0
+      else
+        a3 = (cs*dsigtm - amu*dutm) / det
+      end if
     end if
 
-    det = amup*cs + amu*csp
-    if (det.eq.0.d0) then
+    if (ixy .eq. 1 .and. dabs(slipp) > 1.d-10) then
       a4 = 0.d0
     else
-      a4 = (cs*dsigtp + amu*dutp) / det
+      det = amup*cs + amu*csp
+      if (det.eq.0.d0) then
+        a4 = 0.d0
+      else
+        a4 = (cs*dsigtp + amu*dutp) / det
+      end if
     end if
 
     ! Compute the waves.
     wave(:,1) = 0.d0
     wave(1,1) = a1 * (alamm + 2.d0*amum*nx2m)
     wave(2,1) = a1 * (alamm + 2.d0*amum*ny2m)
-    wave(3,1) = a1 * (2.d0*amum*nxym)
+    wave(3,1) = a1 * (2*amum*nxym)
     wave(4,1) = a1 * cpm * nxm
     wave(5,1) = a1 * cpm * nym
     s(1) = -cpm
@@ -174,7 +184,7 @@ subroutine rpt2(ixy,imp,maxm,meqn,mwaves,maux,mbc,mx,ql,qr,aux1,aux2,aux3,asdq,b
     wave(:,2) = 0.d0
     wave(1,2) = a2 * (alamp + 2.d0*amup*nx2p)
     wave(2,2) = a2 * (alamp + 2.d0*amup*ny2p)
-    wave(3,2) = a2 * (2.d0*amup*nxyp)
+    wave(3,2) = a2 * (2*amup*nxyp)
     wave(4,2) = - a2 * cpp * nxp
     wave(5,2) = - a2 * cpp * nyp
     s(2) = cpp
