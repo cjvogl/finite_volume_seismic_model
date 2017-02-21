@@ -10,7 +10,7 @@ function setplot is called to set the plot parameters.
 import numpy as np
 from mapping import Mapping
 from clawpack.clawutil.data import ClawData
-import dtopotools_horiz_okada_and_1d as dtopotools
+import clawpack.seismic.dtopotools_horiz_okada_and_1d as dtopotools
 reload(dtopotools)
 
 length_scale = 1.0e-3 # m to km
@@ -33,7 +33,7 @@ def setplot(plotdata):
 
     mapping = Mapping(fault)
 
-    fault_width = mapping.fault_width
+    fault_width = mapping.fault_width*length_scale
     ycenter = mapping.ycenter
     xp1 = mapping.xp1*length_scale
     xp2 = mapping.xp2*length_scale
