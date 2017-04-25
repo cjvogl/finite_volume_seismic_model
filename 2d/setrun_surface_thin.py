@@ -72,7 +72,7 @@ def setrun(claw_pkg='amrclaw'):
     clawdata.num_dim = num_dim
 
     # Number of grid cells:
-    num_cells_fault = 8
+    num_cells_fault = 4
     dx = fault_width/num_cells_fault
 
     # determine cell number and set computational boundaries
@@ -146,7 +146,7 @@ def setrun(claw_pkg='amrclaw'):
     elif clawdata.output_style == 2:
         # Specify a list or numpy array of output times:
         # Include t0 if you want output at the initial time.
-        clawdata.output_times =  [0.0, 4.0, 10.0, 20.0, 30.0, 40.0, 70.0]
+        clawdata.output_times =  [90.0]
 
     elif clawdata.output_style == 3:
         # Output every step_interval timesteps over total_steps timesteps:
@@ -305,9 +305,9 @@ def setrun(claw_pkg='amrclaw'):
 
     # List of refinement ratios at each level (length at least
     # amr_level_max-1)
-    amrdata.refinement_ratios_x = [2,2,2,2,2]
-    amrdata.refinement_ratios_y = [2,2,2,2,2]
-    amrdata.refinement_ratios_t = [2,2,2,2,2]
+    amrdata.refinement_ratios_x = [2,2,2,2,2,2]
+    amrdata.refinement_ratios_y = [2,2,2,2,2,2]
+    amrdata.refinement_ratios_t = [2,2,2,2,2,2]
 
 
     # Specify type of each aux variable in amrdata.auxtype.

@@ -35,8 +35,6 @@ def setplot(plotdata):
 
     mapping = Mapping(fault)
 
-    fault_width = mapping.fault_width
-    ycenter = mapping.ycenter
     xp1 = mapping.xp1*length_scale
     xp2 = mapping.xp2*length_scale
     yp1 = mapping.yp1*length_scale
@@ -62,11 +60,13 @@ def setplot(plotdata):
         return xp*length_scale,yp*length_scale
 
     def plot_fault(current_data):
-        from pylab import linspace, plot, tick_params
+        from pylab import linspace, plot, xlabel, ylabel, tick_params
         xl = linspace(xp1,xp2,100)
         yl = linspace(yp1,yp2,100)
         plot(xl,yl,'k',linewidth=3)
         tick_params(labelsize=25)
+        xlabel('kilometers',fontsize=25)
+        ylabel('kilometers',fontsize=25)
 
     def sigmatr(current_data):
         # return -trace(sigma)
@@ -74,7 +74,7 @@ def setplot(plotdata):
         return -(q[0,:,:] + q[1,:,:])
 
     def plot_vertical_displacement(current_data):
-        from pylab import plot,zeros,tick_params
+        from pylab import plot,zeros,ylabel,tick_params
         t = current_data.t
 
         ys = zeros(ngauges)
@@ -89,10 +89,11 @@ def setplot(plotdata):
         plot(xc[:ngauges]*length_scale,ys,linewidth=3)
         plot(xc*length_scale,fault.dtopo.dZ[0,0,:],linestyle='--',color='r',linewidth=3)
         tick_params(labelsize=25)
+        ylabel('meters',fontsize=25)
 
     # Figure for surface
     plotfigure = plotdata.new_plotfigure(name='surface', figno=1)
-    plotfigure.kwargs = {'figsize':(10,4)}
+    plotfigure.kwargs = {'figsize':(11,4)}
 
     # Set up for axes in this figure:
     plotaxes = plotfigure.new_plotaxes()
@@ -105,7 +106,7 @@ def setplot(plotdata):
 
     # Figure for fault
     plotfigure = plotdata.new_plotfigure(name='fault', figno=2)
-    plotfigure.kwargs = {'figsize':(10,4)}
+    plotfigure.kwargs = {'figsize':(11,6)}
 
     # Set up for axes in this figure:
     plotaxes = plotfigure.new_plotaxes()
@@ -113,6 +114,7 @@ def setplot(plotdata):
     plotaxes.ylimits = ylimits_fault
     plotaxes.title = ''
     plotaxes.title_with_t = False
+    plotaxes.scaled = True
     plotaxes.afteraxes = plot_fault
 
     # Set up for item on these axes:

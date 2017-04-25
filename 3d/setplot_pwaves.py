@@ -15,7 +15,7 @@ import dtopotools_horiz_okada_and_1d as dtopotools
 
 length_scale = 1.0e-3 # m to km
 xlimits = [-150.0e3*length_scale,200.0e3*length_scale]
-zlimits = [-175e3*length_scale,0.0]
+zlimits = [-175.0e3*length_scale,0.0]
 
 #--------------------------
 def setplot(plotdata):
@@ -28,15 +28,16 @@ def setplot(plotdata):
 
     """
     slice_number = 3
+    tmpdir = os.path.abspath(os.curdir)
     os.chdir(plotdata.outdir)
     for filename in os.listdir('.'):
         if (filename.startswith('slice_%d' % slice_number)):
             shutil.copyfile(filename,filename.replace('slice_%d' % slice_number,'fort',1))
-
-    os.chdir('..')
-
+    
     fault = dtopotools.Fault()
     fault.read('fault.data')
+
+    os.chdir(tmpdir)
 
     mapping = Mapping(fault)
 
@@ -52,11 +53,13 @@ def setplot(plotdata):
         return xp*length_scale,yp*length_scale
 
     def plot_fault(current_data):
-        from pylab import linspace, plot, tick_params
+        from pylab import linspace, plot, xlabel, ylabel, tick_params
         xl = linspace(xp1,xp2,100)
         zl = linspace(zp1,zp2,100)
         plot(xl,zl,'g',linewidth=3)
-        tick_params(labelsize=20)
+        tick_params(labelsize=25)
+        xlabel('kilometers',fontsize=25)
+        ylabel('kilometers',fontsize=25)
 
     from clawpack.visclaw import colormaps
 
@@ -70,7 +73,7 @@ def setplot(plotdata):
 
     # Figure for trace(sigma)
     plotfigure = plotdata.new_plotfigure(name='fault', figno=1)
-    plotfigure.kwargs = {'figsize':(10,4)}
+    plotfigure.kwargs = {'figsize':(11,6)}
 
     # Set up for axes in this figure:
     plotaxes = plotfigure.new_plotaxes()

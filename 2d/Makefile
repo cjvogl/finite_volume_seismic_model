@@ -69,54 +69,26 @@ include $(CLAWMAKE)
 #-------------------------------------------------------------------
 # Add make options for paper
 
-FIGURE1_LIST = setrun_fault.py setplot_fault.py setfault_verydeep.py
-FIGURE2_LIST = setrun_both.py setplot_both.py setfault_baseline.py
-FIGURE3_LIST = setrun_surface.py setplot_surface.py setfault_baseline.py \
-	setfault_deep.py setfault_steep.py setfault_thin.py
-FIGURE4_LIST = setrun_surface.py setplot_surface.py setfault_smooth.py \
-	setfault_bimodal.py
 
 figures: ;
-	rm -rf .output* .plots* .figure1 .figure3 .figure4
+	rm -rf .output* .plots* .figure*
 	$(MAKE) new
 	$(MAKE) .figures
 
-.figures: $(MAKEFILE_LIST) $(FIGURE1_LIST) $(FIGURE2_LIST) $(FIGURE3_LIST);
-	$(MAKE) .exe
-	$(MAKE) .figure1
-	$(MAKE) .figure2
-	$(MAKE) .figure3
-	$(MAKE) .figure4
+.figures: .figure1 .figure3 .figure4;
+	touch .figures
 
-.figure1: $(FIGURE1_LIST);
-	$(MAKE) .output_fault
-	$(MAKE) .plots_fault
+.figure1: .plots_fault;
 	touch .figure1
 
-.figure2: $(FIGURE2_LIST);
-	$(MAKE) .output_both
-	$(MAKE) .plots_both
-	touch .figure2
-
-.figure3: $(FIGURE3_LIST);
-	$(MAKE) .output_baseline
-	$(MAKE) .plots_baseline
-	$(MAKE) .output_deep
-	$(MAKE) .plots_deep
-	$(MAKE) .output_steep
-	$(MAKE) .plots_steep
-	$(MAKE) .output_thin
-	$(MAKE) .plots_thin
+.figure3: .plots_both;
 	touch .figure3
 
-.figure4: $(FIGURE4_LIST);
-	$(MAKE) .output_smooth
-	$(MAKE) .plots_smooth
-	$(MAKE) .output_bimodal
-	$(MAKE) .plots_bimodal
+.figure4: .plots_baseline .plots_deep .plots_steep .plots_thin \
+	.plots_smooth .plots_bimodal;
 	touch .figure4
 
-.output_fault: setrun_fault.py setfault_verydeep.py;
+.output_fault: $(EXE) setrun_fault.py setfault_verydeep.py;
 	$(CLAW_PYTHON) setfault_verydeep.py
 	$(CLAW_PYTHON) setrun_fault.py $(CLAW_PKG)
 	$(CLAW_PYTHON) $(CLAW)/clawutil/src/python/clawutil/runclaw.py $(EXE) \
@@ -124,7 +96,7 @@ figures: ;
 	$(NICE)
 	touch .output_fault
 
-.output_both: setrun_both.py setfault_baseline.py;
+.output_both: $(EXE) setrun_both.py setfault_baseline.py;
 	$(CLAW_PYTHON) setfault_baseline.py
 	$(CLAW_PYTHON) setrun_both.py $(CLAW_PKG)
 	$(CLAW_PYTHON) $(CLAW)/clawutil/src/python/clawutil/runclaw.py $(EXE) \
@@ -132,7 +104,7 @@ figures: ;
 	$(NICE)
 	touch .output_both
 
-.output_baseline: setrun_surface.py setfault_baseline.py;
+.output_baseline: $(EXE) setrun_surface.py setfault_baseline.py;
 	$(CLAW_PYTHON) setfault_baseline.py
 	$(CLAW_PYTHON) setrun_surface.py $(CLAW_PKG)
 	$(CLAW_PYTHON) $(CLAW)/clawutil/src/python/clawutil/runclaw.py $(EXE) \
@@ -140,7 +112,7 @@ figures: ;
 	$(NICE)
 	touch .output_baseline
 
-.output_deep: setrun_surface.py setfault_deep.py;
+.output_deep: $(EXE) setrun_surface.py setfault_deep.py;
 	$(CLAW_PYTHON) setfault_deep.py
 	$(CLAW_PYTHON) setrun_surface.py $(CLAW_PKG)
 	$(CLAW_PYTHON) $(CLAW)/clawutil/src/python/clawutil/runclaw.py $(EXE) \
@@ -148,7 +120,7 @@ figures: ;
 	$(NICE)
 	touch .output_deep
 
-.output_steep: setrun_surface.py setfault_steep.py;
+.output_steep: $(EXE) setrun_surface.py setfault_steep.py;
 	$(CLAW_PYTHON) setfault_steep.py
 	$(CLAW_PYTHON) setrun_surface.py $(CLAW_PKG)
 	$(CLAW_PYTHON) $(CLAW)/clawutil/src/python/clawutil/runclaw.py $(EXE) \
@@ -156,15 +128,15 @@ figures: ;
 	$(NICE)
 	touch .output_steep
 
-.output_thin: setrun_surface.py setfault_thin.py;
+.output_thin: $(EXE) setrun_surface_thin.py setfault_thin.py;
 	$(CLAW_PYTHON) setfault_thin.py
-	$(CLAW_PYTHON) setrun_surface.py $(CLAW_PKG)
+	$(CLAW_PYTHON) setrun_surface_thin.py $(CLAW_PKG)
 	$(CLAW_PYTHON) $(CLAW)/clawutil/src/python/clawutil/runclaw.py $(EXE) \
 	output_thin $(OVERWRITE) $(RESTART) . $(GIT_STATUS) $(NOHUP) \
 	$(NICE)
 	touch .output_thin
 
-.output_smooth: setrun_surface.py setfault_smooth.py
+.output_smooth: $(EXE) setrun_surface.py setfault_smooth.py
 	$(CLAW_PYTHON) setfault_smooth.py
 	$(CLAW_PYTHON) setrun_surface.py $(CLAW_PKG)
 	$(CLAW_PYTHON) $(CLAW)/clawutil/src/python/clawutil/runclaw.py $(EXE) \
@@ -172,7 +144,7 @@ figures: ;
 	$(NICE)
 	touch .output_smooth
 
-.output_bimodal: setrun_surface.py setfault_bimodal.py
+.output_bimodal: $(EXE) setrun_surface.py setfault_bimodal.py
 	$(CLAW_PYTHON) setfault_bimodal.py
 	$(CLAW_PYTHON) setrun_surface.py $(CLAW_PKG)
 	$(CLAW_PYTHON) $(CLAW)/clawutil/src/python/clawutil/runclaw.py $(EXE) \

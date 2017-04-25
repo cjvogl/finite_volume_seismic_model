@@ -32,15 +32,16 @@ def setplot(plotdata):
 
     """
     slice_number = 1 # set to surface slice number
+    tmpdir = os.path.abspath(os.curdir)
     os.chdir(plotdata.outdir)
     for filename in os.listdir('.'):
         if (filename.startswith('slice_%d' % slice_number)):
             shutil.copyfile(filename,filename.replace('slice_%d' % slice_number,'fort',1))
 
-    os.chdir('..')
-
     fault = dtopotools.Fault()
     fault.read('fault.data')
+
+    os.chdir(tmpdir)
 
     from clawpack.visclaw import colormaps
 
@@ -59,14 +60,15 @@ def setplot(plotdata):
         return xc*length_scale,yc*length_scale
 
     def plot_okada_contour(current_data):
-        from pylab  import contour, tick_params
+        from pylab  import contour, ylabel, tick_params
 
         contour(Xc,Yc,fault.dtopo.dZ[0,:,:],levels=clevels,colors='r',linewidths=2)
         tick_params(labelsize=25)
+        ylabel('kilometers',fontsize=25)
 
     # Figure for vertical displacement
     plotfigure = plotdata.new_plotfigure(name='surface', figno=1)
-    plotfigure.kwargs = {'figsize':(10,4)}
+    plotfigure.kwargs = {'figsize':(11,6)}
 
     # Set axes for numerical solution:
     plotaxes = plotfigure.new_plotaxes()

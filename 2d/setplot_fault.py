@@ -50,7 +50,7 @@ def setplot(plotdata):
         return xp*length_scale,yp*length_scale
 
     def plot_fault(current_data):
-        from pylab import linspace, plot, tick_params, annotate
+        from pylab import linspace, plot, xlabel, ylabel, tick_params, annotate
         xl = linspace(xp1,xp2,100)
         yl = linspace(yp1,yp2,100)
         plot(xl,yl,'k',linewidth=3)
@@ -59,6 +59,8 @@ def setplot(plotdata):
             annotate('',(xp1,yp1+10),(xp2,yp2+10),arrowprops=arrowprops)
             annotate('',(xp2,yp2-10),(xp1,yp1-10),arrowprops=arrowprops)
         tick_params(labelsize=25)
+        xlabel('kilometers', fontsize=25)
+        ylabel('kilometers', fontsize=25)
 
     def sigmatr(current_data):
         # return -trace(sigma)
@@ -77,7 +79,7 @@ def setplot(plotdata):
 
     # Figure for results
     plotfigure = plotdata.new_plotfigure(name='results', figno=1)
-    plotfigure.kwargs = {'figsize':(10,8)}
+    plotfigure.kwargs = {'figsize':(11,8)}
 
     # Set up for axes in this figure:
     plotaxes = plotfigure.new_plotaxes()

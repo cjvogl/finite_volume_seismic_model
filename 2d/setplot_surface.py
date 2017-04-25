@@ -46,7 +46,7 @@ def setplot(plotdata):
     plotdata.format = 'binary'
 
     def plot_vertical_displacement(current_data):
-        from pylab import plot,zeros,tick_params
+        from pylab import plot,zeros,xlabel,ylabel,tick_params
         t = current_data.t
 
         ys = zeros(ngauges)
@@ -61,9 +61,11 @@ def setplot(plotdata):
         plot(xc[:ngauges]*length_scale,ys,linewidth=3)
         plot(xc*length_scale,fault.dtopo.dZ[0,0,:],linestyle='--',color='r',linewidth=3)
         tick_params(labelsize=25)
+        xlabel('kilometers',fontsize=25)
+        ylabel('meters',fontsize=25)
 
     def plot_horizontal_displacement(current_data):
-        from pylab import plot,zeros,tick_params
+        from pylab import plot,zeros,xlabel,ylabel,tick_params
         t = current_data.t
 
         xs = zeros(ngauges)
@@ -79,10 +81,12 @@ def setplot(plotdata):
         plot(xc[:ngauges]*length_scale,xs,linewidth=3)
         plot(xc*length_scale,fault.dtopo.dY[0,0,:],linestyle='--',color='r',linewidth=3)
         tick_params(labelsize=25)
+        xlabel('kilometers',fontsize=25)
+        ylabel('meters',fontsize=25)
 
     # Figure for vertical displacement
     plotfigure = plotdata.new_plotfigure(name='vertical', figno=1)
-    plotfigure.kwargs = {'figsize':(10,8)}
+    plotfigure.kwargs = {'figsize':(11,8)}
 
     # Set up for axes in this figure:
     plotaxes = plotfigure.new_plotaxes()
@@ -95,7 +99,7 @@ def setplot(plotdata):
 
     # Figure for horizontal displacement
     plotfigure = plotdata.new_plotfigure(name='horizontal', figno=2)
-    plotfigure.kwargs = {'figsize':(10,8)}
+    plotfigure.kwargs = {'figsize':(11,8)}
 
     # Set up for axes in this figure:
     plotaxes = plotfigure.new_plotaxes()
