@@ -10,7 +10,7 @@ This code requires installation of the Clawpack software ([www.clawpack.org](htt
 
 The follow commands are available in the included Makefiles:
 
--figures: remove all previous output and plots, recompile code, make all figures
--.figures: check dependencies and remake only figures that need it
+* figures: remove all previous output and plots, recompile code, make all figures
+* .figures: check dependencies and remake only figures that need it
 
 Note the 2d and 3d code exist in separate directories.
