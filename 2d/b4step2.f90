@@ -23,7 +23,7 @@ subroutine b4step2(mbc,mx,my,meqn,q,xlower,ylower,dx,dy,t,dt,maux,aux)
 
           do i=1-mbc,mx+mbc
             xcell = xlower + (i-0.5d0)*dx
-            if (xcb(1) <= xcell - 0.5d0*dx .and. xcell + 0.5d0*dx <= xcb(2)) then
+            if (xcb(1)-1.d-10 <= xcell - 0.5d0*dx .and. xcell + 0.5d0*dx <= xcb(2)+1.d-10) then
 
               do k=1,nsubfaults
                 if (subfaults(k)%longitude*LAT2METER <= xcell .and. &
