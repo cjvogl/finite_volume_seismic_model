@@ -24,11 +24,11 @@ subroutine b4step3(mbc,mx,my,mz,meqn,q,xlower,ylower,zlower, &
 
           do j=1-mbc,my+mbc
             ycell = ylower + (j-0.5d0)*dy
-            if (ycb(1) <= ycell - 0.5d0*dy .and. ycell + 0.5d0*dy <= ycb(2)) then
+            if (ycb(1)-1.d-10 <= ycell - 0.5d0*dy .and. ycell + 0.5d0*dy <= ycb(2)+1.d-10) then
 
               do i=1-mbc,mx+mbc
                 xcell = xlower + (i-0.5d0)*dx
-                if (xcb(1) <= xcell - 0.5d0*dx .and. xcell + 0.5d0*dx <= xcb(2)) then
+                if (xcb(1)-1.d-10 <= xcell - 0.5d0*dx .and. xcell + 0.5d0*dx <= xcb(2)+1.d-10) then
               
                   do l=1,nsubfaults
                     if (subfaults(l)%longitude*LAT2METER <= xcell .and. &
