@@ -5,6 +5,7 @@ module fault_module
     integer :: nsubfaults
     type subfault
       real(kind=8) :: width, depth, slip, longitude, rupture_time, rise_time
+      real(kind=8) :: xcb(2)
     end type subfault
     type(subfault), allocatable :: subfaults(:)
     real(kind=8) :: center(2), theta, xcb(2), final_rupture_rise_time
@@ -51,10 +52,21 @@ contains
 
         center(1) = 0.5d0*(xp1 + xp2)
         center(2) = 0.5d0*(yp1 + yp2)
-        total_width = dsqrt((xp2-xp1)**2 + (yp2-yp1)**2)      
+        total_width = dsqrt((xp2-xp1)**2 + (yp2-yp1)**2)
 
         xcb(1) = center(1) - 0.5d0*total_width
         xcb(2) = center(1) + 0.5d0*total_width
+
+        ! Determine subfault location in computational domain
+        print *, "*******WARNING*******"
+        print *, "Subfaults are assumed to be specified in top-center coords"
+        print *, "*********************"
+        do i=1,nsubfaults
+          subfaults(i)%xcb(1) = xcb(1) + dsqrt( &
+                (subfaults(i)%longitude*LAT2METER - xp1)**2 + &
+                (-subfaults(i)%depth - yp1)**2 )
+          subfaults(i)%xcb(2) = subfaults(i)%xcb(1) + subfaults(i)%width
+        end do
 
         close(7)
 
